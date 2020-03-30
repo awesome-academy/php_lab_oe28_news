@@ -1,0 +1,17 @@
+{
+  "name": "php_lab_oe28_news",
+  "description": "",
+  "main": "",
+  "authors": [
+    "ngoctho-hust <ngoctho.t1k54@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ngoctho-hust/php_lab_oe28_news",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
