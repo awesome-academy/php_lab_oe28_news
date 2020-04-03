@@ -25,3 +25,4 @@ Homestead.json
 .phpunit.result.cache
 
 public/bower_components/*
+.idea/
