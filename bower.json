@@ -13,5 +13,13 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "bower-package": "https://github.com/ngoctho-hust/bowerpackage.git",
+    "font-awesome": "fontawesome#^5.13.0",
+    "bootstrap": "^4.4.1",
+    "animsition": "^4.0.2",
+    "material-design-iconic-font": "^2.2.0",
+    "jquery": "^3.4.1"
+  }
 }
