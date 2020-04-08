@@ -9,7 +9,12 @@
             <div class="box box-border">
                 <div class="box-body">
                     <h4>{{ trans('pages.login') }}</h4>
-                    <form>
+                    @include('common.errors')
+                    @if (session()->has('message'))
+                        <div class="alert alert-success">{{ session()->get('message') }}</div>
+                    @endif
+                    <form action="{{ route('login') }}" method="POST">
+                        @csrf
                         <div class="form-group">
                             <label>{{ trans('pages.username') }}</label>
                             <input type="text" name="username" class="form-control">
@@ -21,7 +26,7 @@
                         </div>
                         <div class="form-group">
                             <label for="remember-me" class="fw"><span>{{ trans('remember_me') }}</span>
-                                <span><input id="remember-me" name="remember-me" type="checkbox"></span>
+                                <span><input id="remember-me" name="remember" type="checkbox"></span>
                             </label>
                         </div>
                         <div class="form-group text-right">
