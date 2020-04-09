@@ -9,7 +9,9 @@
                 <div class="box box-border">
                     <div class="box-body">
                         <h4>{{ trans('pages.register') }}</h4>
-                        <form>
+                        @include('common.errors')
+                        <form action="{{ route('register') }}" method="POST">
+                            @csrf
                             <div class="form-group">
                                 <label>{{ trans('pages.name') }}</label>
                                 <input type="text" name="name" class="form-control">

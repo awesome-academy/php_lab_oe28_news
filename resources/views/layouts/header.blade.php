@@ -34,13 +34,13 @@
                                 <li><a href="#"><i class="icon ion-person"></i>{{ trans('pages.profile') }}</a></li>
                                 <li><a href="#"><i class="icon ion-settings"></i>{{ trans('pages.admin') }}</a></li>
                                 <li class="dropdown-divider"></li>
-                                <li><a href="#"><i class="icon ion-log-out"></i>{{ trans('pages.logout') }}</a></li>
+                                <li><a href="{{ route('logout') }}"><i class="icon ion-log-out"></i>{{ trans('pages.logout') }}</a></li>
                             </ul>
                         @else
-                            <li><a href=""><i class="ion-person-add"></i>
+                            <li><a href="{{ route('indexRegister') }}"><i class="ion-person-add"></i>
                                     <div>{{ trans('pages.register') }}</div>
                                 </a></li>
-                            <li><a href=""><i class="ion-person"></i>
+                            <li><a href="{{ route('indexLogin') }}"><i class="ion-person"></i>
                                     <div>{{ trans('pages.login') }}</div>
                                 </a></li>
                         @endif

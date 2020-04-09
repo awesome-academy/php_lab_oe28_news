@@ -52,4 +52,6 @@ return [
     'type_something' => 'Viết gì đó',
     'filter' => 'Bộ lọc',
     'latest' => 'Mới nhất',
+    'error' => 'Thất bại',
+    'complete' => 'Đăng ký thành công!',
 ];

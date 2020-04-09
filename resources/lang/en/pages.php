@@ -52,4 +52,6 @@ return [
     'type_something' => 'Type something',
     'filter' => 'Filter',
     'latest' => 'Latest',
+    'error' => 'Whoops! Something went wrong!',
+    'complete' => 'Successfully sign up!',
 ];
