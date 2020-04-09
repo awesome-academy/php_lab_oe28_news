@@ -1,35 +1,37 @@
 @extends('layouts.app')
 
-@section('title', 'Title')
+@section('title', $news->title)
 
 @section('content')
     <section class="single">
         <div class="container">
             <div class="row">
-                <div class="col-md-4 sidebar" id="sidebar">
-                </div>
                 <div class="col-md-8">
                     <ol class="breadcrumb">
-                        <li><a href="#">{{ trans('pages.home') }}</a></li>
-                        <li class="active"></li>
+                        <li><a href="{{ route('home') }}">{{ trans('pages.home') }}</a></li>
+                        @for ($i = count($uriCategory) - 1; $i >= 0; $i--)
+                            <li><a href="">{{ $uriCategory[$i]->name }}</a></li>
+                        @endfor
+                        <li class="active">{{ $news->category->name }}</li>
                     </ol>
                     <article class="article main-article">
                         <header>
-                            <h1></h1>
+                            <h1>{{$news->title}}</h1>
                             <ul class="details">
-                                <li></li>
-                                <li>{{ trans('pages.by') }} <a href="#"></a></li>
+                                <li>{{ $news->created_at->format('Y-m-d') }}</li>
+                                <li><a href="">{{ $news->category->name }}</a></li>
+                                <li>{{ trans('pages.by').$news->user->name }}</li>
                             </ul>
                         </header>
                         <div class="main">
-                            <b></b>
-                            <p></p>
+                            <b>{{ $news->description }}</b>
+                            <p>{{ $news->content }}</p>
                         </div>
                         <footer>
                             <div class="col">
                             </div>
                             <div class="col">
-                                <a href="#" class="love"><i class="ion-android-favorite-outline"></i> <div>1220</div></a>
+                                <a href="#" class="love"><i class="ion-android-favorite-outline"></i> <div>{{ $news->likes->count() }}</div></a>
                             </div>
                         </footer>
                     </article>

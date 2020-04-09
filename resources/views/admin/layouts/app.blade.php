@@ -9,7 +9,7 @@
     <link href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('bower_components/animsition/dist/css/animsition.min.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('public/bower_components/bower-package/admin/css/theme.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('bower_components/bower-package/admin/css/theme.css') }}" rel="stylesheet" media="all">
 </head>
 
 <body class="animsition">
@@ -42,6 +42,6 @@
     <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('bower_components/animsition/dist/js/animsition.min.js') }}"></script>
 
-    <script src="{{ asset('public/bower_components/bower-package/admin/js/main.js') }}"></script>
+    <script src="{{ asset('bower_components/bower-package/admin/js/main.js') }}"></script>
 </body>
 </html>

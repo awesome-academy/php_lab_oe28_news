@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::group(['namespace' => 'Auth'], function () {
     Route::get('/login', 'LoginController@index')->name('indexLogin');
     Route::post('/login', 'LoginController@login')->name('login');
@@ -21,3 +22,7 @@ Route::group(['namespace' => 'Auth'], function () {
 });
 
 Route::get('/', 'HomeController@index')->name('home');
+
+Route::resource('news', 'NewsController')->only([
+    'show',
+]);

@@ -42,7 +42,7 @@ return [
     'contact' => 'Liên hệ',
     'update'=> 'Cập nhật',
     'more' => 'Thêm',
-    'by' => 'Bởi',
+    'by' => 'Bởi ',
     'comments' => 'Bình luận',
     'comment' => 'Bình luận',
     'reply' => 'Trả lời',
@@ -54,4 +54,6 @@ return [
     'latest' => 'Mới nhất',
     'error' => 'Thất bại',
     'complete' => 'Đăng ký thành công!',
+    'hot_news' => 'Tin nóng',
+    'latest_news' => 'Tin mới nhất',
 ];

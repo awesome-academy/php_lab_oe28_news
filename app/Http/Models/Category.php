@@ -14,7 +14,7 @@ class Category extends Model
 
     public function news()
     {
-        return $this->hasMany(Book::class);
+        return $this->hasMany(News::class);
     }
 
     public function parent()
@@ -25,5 +25,10 @@ class Category extends Model
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function allChildCategoriesWithNews()
+    {
+        return $this->children()->with(['allChildCategoriesWithNews', 'news']);
     }
 }
