@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-3 col-sm-12">
                     <div class="brand">
-                        <a href="">
+                        <a href="{{ route('home') }}">
                             <h1>{{ trans('pages.news') }}</h1>
                         </a>
                     </div>
@@ -13,7 +13,7 @@
                     <form class="search" autocomplete="off">
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="text" name="q" class="form-control" placeholder="Type something here">
+                                <input type="text" name="q" class="form-control" placeholder="{{ trans('pages.type_something') }}">
                                 <div class="input-group-btn">
                                     <button class="btn btn-primary"><i class="ion-search"></i></button>
                                 </div>
@@ -51,9 +51,18 @@
     </div>
     <nav class="menu">
         <div class="container">
+            <div class="brand">
+                <a href="{{ route('home') }}"><h1>{{ trans('pages.news') }}</h1></a>
+            </div>
+            <div class="mobile-toggle">
+                <a href="#" data-toggle="menu" data-target="#menu-list"><i class="ion-navicon-round"></i></a>
+            </div>
+            <div class="mobile-toggle">
+                <a href="#" data-toggle="sidebar" data-target="#sidebar"><i class="ion-ios-arrow-left"></i></a>
+            </div>
             <div id="menu-list">
                 <ul class="nav-list">
-                    <li><a href="">{{ trans('pages.home') }}</a></li>
+                    <li><a href="{{ route('home') }}">{{ trans('pages.home') }}</a></li>
                 </ul>
             </div>
         </div>
