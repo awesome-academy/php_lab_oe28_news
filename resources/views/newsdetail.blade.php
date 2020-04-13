@@ -18,7 +18,7 @@
                         <header>
                             <h1>{{$news->title}}</h1>
                             <ul class="details">
-                                <li>{{ $news->created_at->format('Y-m-d') }}</li>
+                                <li>{{ $news->created_at->format(config('news.date_format')) }}</li>
                                 <li><a href="">{{ $news->category->name }}</a></li>
                                 <li>{{ trans('pages.by').$news->user->name }}</li>
                             </ul>

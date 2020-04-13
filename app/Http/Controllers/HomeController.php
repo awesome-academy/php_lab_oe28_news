@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\NewsStatus;
 use App\Http\Models\Category;
 use App\Http\Models\News;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
         $hotNews = News::with('category')
-            ->where('status', 1)
-            ->where('hot', 1)
+            ->where('status', NewsStatus::StatusPublished)
+            ->where('hot', config('news.hot.yes'))
             ->orderBy('created_at', 'desc')
-            ->take(8)
+            ->take(config('news.hot.take'))
             ->get();
         $latestNews = News::with('category')
-            ->where('status', 1)
+            ->where('status', NewsStatus::StatusPublished)
             ->orderBy('created_at', 'desc')
-            ->take(10)
+            ->take(config('news.latest.take'))
             ->get();
         $rootCategories = Category::with(['allChildCategoriesWithNews', 'news'])
             ->where('parent_id', null)
@@ -31,10 +31,10 @@ class HomeController extends Controller
             $collection = collect();
 
             foreach ($rootCategory->allChildCategoriesWithNews as $category) {
-                $collection = $collection->concat($category->news->where('status', 1));
+                $collection = $collection->concat($category->news->where('status', NewsStatus::StatusPublished));
             }
 
-            $collection = $collection->merge($rootCategory->news->where('status', 1));
+            $collection = $collection->merge($rootCategory->news->where('status', NewsStatus::StatusPublished));
             if (!empty($collection->count())) array_push($listCategories, [$rootCategory, $collection]);
         }
 

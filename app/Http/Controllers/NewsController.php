@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\NewsStatus;
 use App\Http\Models\News;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ class NewsController extends Controller
         try {
             $news = News::with('category')
                 ->where('id', $id)
-                ->where('status', 1)
+                ->where('status', NewsStatus::StatusPublished)
                 ->firstOrFail();
             $category = $news->category;
 
