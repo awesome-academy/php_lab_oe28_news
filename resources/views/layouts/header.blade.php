@@ -63,6 +63,16 @@
             <div id="menu-list">
                 <ul class="nav-list">
                     <li><a href="{{ route('home') }}">{{ trans('pages.home') }}</a></li>
+                    @php
+                        $headerCategories = App\Http\Models\Category::with(['news', 'children'])->where('parent_id', null)->get();
+                    @endphp
+                    @foreach ($headerCategories as $category)
+                        @if (count($category->children) == 0)
+                            <li><a href="{{ route('category', $category->id) }}">{{ $category->name }}</a></li>
+                        @else
+                            @include('layouts.headerCategories', ['categories' => $category->children, 'parent' => $category])
+                        @endif
+                    @endforeach
                 </ul>
             </div>
         </div>
