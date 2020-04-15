@@ -16,4 +16,14 @@ return[
     ],
 
     'date_format' => 'Y-m-d',
+
+    'paginate' => 15,
+
+    'status' => [
+        0 => 'Rejected',
+        1 => 'Published',
+        2 => 'Approved',
+        3 => 'Need Edit More',
+        4 => 'News',
+    ],
 ];
