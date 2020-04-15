@@ -23,6 +23,10 @@ Route::group(['namespace' => 'Auth'], function () {
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::get('/search', 'HomeController@search')->name('search');
+
+Route::get('/category/{id}', 'HomeController@category')->name('category');
+
 Route::resource('news', 'NewsController')->only([
     'show',
 ]);
