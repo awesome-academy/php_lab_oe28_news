@@ -132,11 +132,13 @@ class NewsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        News::destroy($id);
+
+        return json_encode(['success' => trans('pages.news_delete_success')]);
     }
 
     public function status($id, $statusId)

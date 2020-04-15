@@ -3,7 +3,7 @@
 @section('title', trans('pages.news_detail'))
 
 @section('menu')
-    <li class="active"><a href="{{ route('adminNews') }}">{{ trans('pages.news') }}</a></li>
+    <li class="active"><a href="{{ route('admin.news.index') }}">{{ trans('pages.news') }}</a></li>
     <li><a href="">{{ trans('pages.users') }}</a></li>
     <li><a href="">{{ trans('pages.categories') }}</a></li>
 @endsection
@@ -72,26 +72,39 @@
                         <div class="card-header">
                             <strong>{{ trans('pages.option') }}:</strong>
                             <div class="col-md-9">
-                                @if ($news->status == App\Enums\NewsStatus::StatusApproved)
-                                    <div class="table-data-feature">
-                                        <a class="item" data-toggle="tooltip" href="{{ route('adminNewsStatus', [$news->id, App\Enums\NewsStatus::StatusPublished]) }}" title="{{ trans('pages.publish') }}">
+                                <div class="table-data-feature">
+                                    @if ($news->status == App\Enums\NewsStatus::StatusApproved)
+                                        <a class="item" data-toggle="tooltip"
+                                           href="{{ route('admin.news.status', [$news->id, App\Enums\NewsStatus::StatusPublished]) }}"
+                                           title="{{ trans('pages.publish') }}">
                                             <i class="zmdi zmdi-mail-send"></i>
                                         </a>
-                                        <a class="item" data-toggle="tooltip" href="{{ route('adminNewsStatus', [$news->id, App\Enums\NewsStatus::StatusRejected]) }}" title="{{ trans('pages.reject') }}">
+                                        <a class="item" data-toggle="tooltip"
+                                           href="{{ route('admin.news.status', [$news->id, App\Enums\NewsStatus::StatusRejected]) }}"
+                                           title="{{ trans('pages.reject') }}">
                                             <i class="zmdi zmdi-close"></i>
                                         </a>
-                                    </div>
-                                @elseif ($news->status == App\Enums\NewsStatus::StatusPublished)
-                                    <div class="table-data-feature">
-                                        <a class="item" data-toggle="tooltip" href="{{ route('adminNewsStatus', [$news->id, App\Enums\NewsStatus::StatusApproved]) }}" title="{{ trans('pages.take_down') }}">
+                                    @elseif ($news->status == App\Enums\NewsStatus::StatusPublished)
+                                        <a class="item" data-toggle="tooltip"
+                                           href="{{ route('admin.news.status', [$news->id, App\Enums\NewsStatus::StatusApproved]) }}"
+                                           title="{{ trans('pages.take_down') }}">
                                             <i class=" zmdi zmdi-triangle-down"></i>
                                         </a>
-                                    </div>
-                                @endif
+                                    @endif
+                                    <button class="item delete-confirm" data-toggle="tooltip"
+                                            data-confirm="{{ trans('pages.news_delete_confirm') }}"
+                                            data-title="{{ trans('pages.news_delete_title') }}"
+                                            data-error="{{ trans('pages.error') }}"
+                                            href="{{ route('news.destroy', $news->id) }}"
+                                            title="{{ trans('pages.delete') }}">
+                                        <i class=" zmdi zmdi-delete"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body card-block">
-                            <form action="{{ route('news.update', $news->id) }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            <form action="{{ route('news.update', $news->id) }}" method="post"
+                                  enctype="multipart/form-data" class="form-horizontal">
                                 @csrf
                                 @method('PATCH')
                                 <div class="row form-group">
@@ -110,9 +123,13 @@
                                         <div class="form-check-inline form-check">
                                             <label for="inline-checkbox1" class="form-check-label ">
                                                 @if ($news->hot)
-                                                    <input type="checkbox" checked="checked" id="inline-checkbox1" name="hot" value="{{ config('news.hot.yes') }}" class="form-check-input">
+                                                    <input type="checkbox" checked="checked" id="inline-checkbox1"
+                                                           name="hot" value="{{ config('news.hot.yes') }}"
+                                                           class="form-check-input">
                                                 @else
-                                                    <input type="checkbox" id="inline-checkbox1" name="hot" value="{{ config('news.hot.yes') }}" class="form-check-input">
+                                                    <input type="checkbox" id="inline-checkbox1" name="hot"
+                                                           value="{{ config('news.hot.yes') }}"
+                                                           class="form-check-input">
                                                 @endif
                                             </label>
                                         </div>
@@ -124,12 +141,12 @@
                                     </div>
                                     <div class="col-12 col-md-9">
                                         <select name="category_id" id="select" class="form-control">
-                                            <option value="{{ $news->category->id }}">{{ $news->category->name }}</option>
+                                            <option value="{{ $news->category->id }}">{{ $news->category->name }}  ( {{ $category->parent->name ?? '' }} )</option>
                                             @foreach ($categories as $category)
                                                 @if ($category == $news->category)
                                                     @continue
                                                 @endif
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}">{{ $category->name }} ( {{ $category->parent->name ?? '' }} )</option>
                                             @endforeach
                                         </select>
                                     </div>

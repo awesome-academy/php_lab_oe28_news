@@ -67,4 +67,10 @@ return [
     'take_down' => 'Take down',
     'image_format' => 'Accept only PNGs, JPEGs',
     'successful' => 'Successful',
+    'delete' => 'Delete',
+    'success' => 'success',
+    'category' => 'Category',
+    'news_delete_confirm' => 'Once deleted, you will not be able to recover this news!',
+    'news_delete_title' => 'Are you sure?',
+    'news_delete_success' => 'Your news has been deleted!',
 ];

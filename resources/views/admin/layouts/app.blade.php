@@ -28,7 +28,7 @@
           media="all">
     <link href="{{ asset('bower_components/bower-package/admin/vendor/perfect-scrollbar/perfect-scrollbar.css') }}"
           rel="stylesheet" media="all">
-    <link href="{{ mix('css/custom.css') }}" rel="stylesheet" media="all">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="animsition">
@@ -74,6 +74,8 @@
     src="{{ asset('bower_components/bower-package/admin/vendor/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
 <script src="{{ asset('bower_components/bower-package/admin/vendor/chartjs/Chart.bundle.min.js') }}"></script>
 <script src="{{ asset('bower_components/bower-package/admin/vendor/select2/select2.min.js') }}"></script>
+<script src="{{ asset('bower_components/bower-package/admin/vendor/sweetalert/sweetalert.min.js') }}"></script>
 <script src="{{ asset('bower_components/bower-package/admin/js/main.js') }}"></script>
+<script src="{{ mix('js/alert.js') }}"></script>
 </body>
 </html>

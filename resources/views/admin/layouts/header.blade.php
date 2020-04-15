@@ -33,6 +33,11 @@
                                         <a href="#"></i>{{ trans('pages.profile') }}</a>
                                     </div>
                                 </div>
+                                <div class="account-dropdown__body">
+                                    <div class="account-dropdown__item">
+                                        <a href="{{ route('home') }}"></i>{{ trans('pages.home') }}</a>
+                                    </div>
+                                </div>
                                 <div class="account-dropdown__footer">
                                     <a href="{{ route('logout') }}"></i>{{ trans('pages.logout') }}</a>
                                 </div>
