@@ -25,7 +25,7 @@
                                         <h1>
                                             <a href="{{ route('news.show', $hotNews->first()->id) }}">{{ $hotNews->first()->title }}</a>
                                         </h1>
-                                        <div class="time">{{ $hotNews->first()->created_at->format('Y-m-d') }}</div>
+                                        <div class="time">{{ $hotNews->first()->created_at->format(config('news.date_format')) }}</div>
                                     </div>
                                 </article>
                             </div>
@@ -72,7 +72,7 @@
                                             </figure>
                                             <div class="padding">
                                                 <div class="detail">
-                                                    <div class="time">{{ $news->created_at->format('Y-m-d') }}</div>
+                                                    <div class="time">{{ $news->created_at->format(config('news.date_format')) }}</div>
                                                     <div class="category"><a href="">{{ $news->category->name }}</a>
                                                     </div>
                                                 </div>
@@ -106,7 +106,7 @@
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <div class="row">
-                                    @foreach ($categories[1]->sortByDesc('created_at')->take(6) as $news)
+                                    @foreach ($categories[1]->sortByDesc('created_at')->take(config('news.category.take')) as $news)
                                         @if ($loop->index == 0)
                                             <article class="article col-md-6">
                                                 <div class="inner">
@@ -119,7 +119,7 @@
                                                     <div class="padding">
                                                         <div class="detail">
                                                             <div
-                                                                class="time">{{ $news->created_at->format('Y-m-d') }}</div>
+                                                                class="time">{{ $news->created_at->format(config('news.date_format')) }}</div>
                                                             <div class="category"><a
                                                                     href="">{{ $news->category->name }}</a>
                                                             </div>
