@@ -10,10 +10,11 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <form class="search" autocomplete="off">
+                    <form class="search" autocomplete="off" action="{{ route('search') }}" method="GET">
+                        @csrf
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="text" name="q" class="form-control" placeholder="{{ trans('pages.type_something') }}">
+                                <input type="text" name="keyWord" class="form-control" placeholder="{{ trans('pages.type_something') }}">
                                 <div class="input-group-btn">
                                     <button class="btn btn-primary"><i class="ion-search"></i></button>
                                 </div>

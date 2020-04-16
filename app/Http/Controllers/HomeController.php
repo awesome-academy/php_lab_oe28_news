@@ -63,7 +63,7 @@ class HomeController extends Controller
             return redirect()->route('home');
         }
 
-        $newsOfCategory = $category->news()->with('likes')->paginate(config('news.paginate'));
+        $newsOfCategory = $category->news()->with('likes')->orderBy('created_at', 'desc')->paginate(config('news.paginate'));
 
         $uriCategory = [];
 
