@@ -23,10 +23,13 @@ Route::group(['namespace' => 'Auth'], function () {
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/search', 'HomeController@search')->name('search');
+Route::resource('news', 'NewsController');
 
-Route::get('/category/{id}', 'HomeController@category')->name('category');
-
-Route::resource('news', 'NewsController')->only([
-    'show',
-]);
+Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
+    Route::group(['prefix' => 'news'], function() {
+        Route::get('/', 'AdminController@indexNews')->name('adminNews');
+        Route::get('/hot/{id}', 'AdminController@hotNews')->name('hotNews');
+        Route::get('/{id}', 'AdminController@showNews')->name('adminShowNews');
+        Route::get('/status/{id}/{statusId}', 'NewsController@status')->name('adminNewsStatus');
+    });
+});

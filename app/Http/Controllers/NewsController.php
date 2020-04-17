@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin')->except('show');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -44,7 +49,7 @@ class NewsController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show($id)
     {
@@ -84,11 +89,43 @@ class NewsController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $news = News::findOrFail($id);
+        } catch (ModelNotFoundException $exception) {
+            return redirect()->back();
+        }
+
+        if ($request->category_id != $news->category_id) $news->category_id = $request->category_id;
+        if ($request->has('hot')) {
+            $news->hot = $request->hot;
+        } else {
+            $news->hot = config('news.hot.no');
+        }
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileExtension = $file->getClientOriginalExtension();
+            if ($fileExtension == 'jpg' || $fileExtension == 'jpeg' || $fileExtension == 'png') {
+                $name = time() . '_' . rand(0, 9999999) . '.' . $fileExtension;
+                while (file_exists('images/news/' . $name)) {
+                    $name = time() . '_' . rand(0, 9999999) . '.' . $fileExtension;
+                }
+
+                $file->move('images/news', $name);
+                if (file_exists('images/news/' . $news->image)) unlink('images/news/' . $news->image);
+                $news->image = $name;
+            } else {
+                return redirect()->back()->withErrors(trans('pages.image_format'));
+            }
+        }
+
+        $news->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -100,5 +137,19 @@ class NewsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function status($id, $statusId)
+    {
+        try {
+            $news = News::findOrFail($id);
+        } catch (ModelNotFoundException $exception) {
+            return redirect()->back()->withErrors(trans('pages.failed'));
+        }
+
+        $news->status = $statusId;
+        $news->save();
+
+        return redirect()->back();
     }
 }

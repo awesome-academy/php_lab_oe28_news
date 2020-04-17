@@ -18,7 +18,7 @@
                                 <div class="info clearfix">
                                     <div class="image">
                                         <a href="#">
-                                            <img src="{{ asset('images/icon/account.png') }}" alt="Admin" />
+                                            <img src="{{ asset('images/icon/account.png') }}" alt="{{ Auth::user()->name }}" />
                                         </a>
                                     </div>
                                     <div class="content">
@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <div class="account-dropdown__footer">
-                                    <a href="#"></i>{{ trans('pages.logout') }}</a>
+                                    <a href="{{ route('logout') }}"></i>{{ trans('pages.logout') }}</a>
                                 </div>
                             </div>
                         </div>
