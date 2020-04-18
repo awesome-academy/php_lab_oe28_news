@@ -5,7 +5,7 @@
 @section('menu')
     <li class="active"><a href="{{ route('admin.news.index') }}">{{ trans('pages.news') }}</a></li>
     <li><a href="">{{ trans('pages.users') }}</a></li>
-    <li><a href="">{{ trans('pages.categories') }}</a></li>
+    <li><a href="{{ route('admin.categories.index') }}">{{ trans('pages.categories') }}</a></li>
 @endsection
 
 @section('content')

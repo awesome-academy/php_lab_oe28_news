@@ -28,6 +28,7 @@ Route::get('/search', 'HomeController@search')->name('search');
 Route::get('/{slug}', 'HomeController@category')->name('category');
 
 Route::resource('news', 'NewsController');
+Route::resource('categories', 'CategoryController');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'as' => 'admin.'], function() {
     Route::group(['prefix' => 'news', 'as' => 'news.'], function() {
@@ -37,6 +38,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'as' => 'admin.'], f
         Route::get('/hot/{id}', 'AdminController@hotNews')->name('hot');
         Route::get('/{id}', 'AdminController@showNews')->name('show');
         Route::get('/status/{id}/{statusId}', 'NewsController@status')->name('status');
+    });
+
+    Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
+        Route::get('/', 'AdminController@indexCategories')->name('index');
+        Route::get('/{id}', 'AdminController@editCategory')->name('edit');
     });
 });
 
