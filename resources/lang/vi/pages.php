@@ -82,6 +82,9 @@ return [
     'category_delete_confirm' => 'Tất cả bài viết trong danh mục sẽ bị xóa theo!',
     'root_category' => 'Danh mục gốc',
     'rename_category' => 'Đổi tên danh mục',
-    'edit_category' => 'Sửa danh m',
+    'edit_category' => 'Sửa danh mục',
     'select_category' => 'Chọn danh mục',
+    'review_news' => 'Duyệt tin',
+    'approve' => 'Chấp nhận',
+    'review' => 'Duyệt',
 ];

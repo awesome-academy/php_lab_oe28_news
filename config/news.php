@@ -24,6 +24,6 @@ return[
         1 => 'Published',
         2 => 'Approved',
         3 => 'Need Edit More',
-        4 => 'News',
+        4 => 'New',
     ],
 ];

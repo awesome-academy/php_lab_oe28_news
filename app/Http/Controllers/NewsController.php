@@ -11,7 +11,7 @@ class NewsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin')->except('show');
+        $this->middleware('admin')->except('show', 'status', 'create', 'update');
     }
 
     /**
@@ -122,6 +122,10 @@ class NewsController extends Controller
                 return redirect()->back()->withErrors(trans('pages.image_format'));
             }
         }
+
+        if ($request->has('title')) $news->title = $request->title;
+        if ($request->has('description')) $news->description = $request->description;
+        if ($request->has('news_content')) $news->content = $request->news_content;
 
         $news->save();
 
