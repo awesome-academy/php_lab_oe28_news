@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Enums\NewsStatus;
 use App\Http\Models\News;
+use App\Http\Requests\NewsRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin')->except('show', 'status', 'create', 'update');
+        $this->middleware('admin')->except('show', 'status', 'store', 'update');
     }
 
     /**
@@ -37,12 +40,41 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param NewsRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(NewsRequest $request)
     {
-        //
+        $name = null;
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileExtension = $file->getClientOriginalExtension();
+            if ($fileExtension == 'jpg' || $fileExtension == 'jpeg' || $fileExtension == 'png') {
+                $name = time() . '_' . rand(0, 9999999) . '.' . $fileExtension;
+                while (file_exists('images/news/' . $name)) {
+                    $name = time() . '_' . rand(0, 9999999) . '.' . $fileExtension;
+                }
+
+                $file->move('images/news', $name);
+            } else {
+                return redirect()->back()->withErrors(trans('pages.image_format'));
+            }
+        }
+
+        News::create([
+            'title' => $request->title,
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'content' => $request->news_content,
+            'hot' => $request->hot ?? config('news.hot.no'),
+            'image' => $name,
+            'user_id' => Auth::user()->id,
+            'status' => NewsStatus::StatusNew,
+            'slug' => Str::slug($request->title),
+        ]);
+
+        return redirect()->back()->with('success', trans('pages.successful'));
     }
 
     /**
@@ -91,7 +123,7 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(NewsRequest $request, $id)
     {
         try {
             $news = News::findOrFail($id);

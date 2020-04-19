@@ -57,8 +57,18 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth', 'as' => 'user.'], func
 
 Route::group(['prefix' => 'review', 'middleware' => 'review', 'as' => 'review.'], function () {
     Route::get('/search', 'ReviewController@searchNews')->name('search');
-    Route::get('/', 'ReviewController@index')->name('index');
+    Route::get('/index', 'ReviewController@index')->name('index');
     Route::get('/status/{id}/{statusId}', 'NewsController@status')->name('status');
     Route::get('/category/{id}', 'ReviewController@category')->name('category');
     Route::get('/{id}', 'ReviewController@editNews')->name('news');
+});
+
+Route::group(['prefix' => 'write', 'middleware' => 'write', 'as' => 'write.'], function () {
+    Route::get('/search', 'WriteController@searchNews')->name('search');
+    Route::get('/create', 'WriteController@createNews')->name('createNews');
+    Route::get('/index', 'WriteController@index')->name('index');
+    Route::get('/status/{id}/{statusId}', 'NewsController@status')->name('status');
+    Route::get('/category/{id}', 'WriteController@category')->name('category');
+    Route::get('/{id}', 'WriteController@editNews')->name('news');
+    Route::post('/photo', 'WriteController@photo')->name('photo');
 });
