@@ -67,4 +67,10 @@ return [
     'take_down' => 'Gỡ xuống',
     'image_format' => 'Chỉ chấp nhận định dạng PNGs, JPEGs',
     'successful' => 'Thành công',
+    'delete' => 'Xóa',
+    'success' => 'Thành công',
+    'category' => 'Danh mục',
+    'news_delete_confirm' => 'Một khi đã xóa, bài viết không thể khôi phục!',
+    'news_delete_title' => 'Chắc chắn xóa?',
+    'news_delete_success' => 'Bài viết đã bị xóa!',
 ];

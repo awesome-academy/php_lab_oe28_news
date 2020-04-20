@@ -1,6 +1,6 @@
 {
+    "/js/alert.js": "/js/alert.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/main.js": "/js/main.js",
-    "/css/custom.css": "/css/custom.css"
+    "/js/main.js": "/js/main.js"
 }

@@ -23,13 +23,19 @@ Route::group(['namespace' => 'Auth'], function () {
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::get('/search', 'HomeController@search')->name('search');
+
+Route::get('/category/{id}', 'HomeController@category')->name('category');
+
 Route::resource('news', 'NewsController');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
-    Route::group(['prefix' => 'news'], function() {
-        Route::get('/', 'AdminController@indexNews')->name('adminNews');
-        Route::get('/hot/{id}', 'AdminController@hotNews')->name('hotNews');
-        Route::get('/{id}', 'AdminController@showNews')->name('adminShowNews');
-        Route::get('/status/{id}/{statusId}', 'NewsController@status')->name('adminNewsStatus');
+Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'as' => 'admin.'], function() {
+    Route::group(['prefix' => 'news', 'as' => 'news.'], function() {
+        Route::get('/search', 'AdminController@searchNews')->name('search');
+        Route::get('/category/{id}', 'AdminController@category')->name('category');
+        Route::get('/', 'AdminController@indexNews')->name('index');
+        Route::get('/hot/{id}', 'AdminController@hotNews')->name('hot');
+        Route::get('/{id}', 'AdminController@showNews')->name('show');
+        Route::get('/status/{id}/{statusId}', 'NewsController@status')->name('status');
     });
 });

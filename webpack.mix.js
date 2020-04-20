@@ -17,3 +17,7 @@ mix.js('resources/js/app.js', 'public/js')
 mix.js([
     'resources/assets/js/main.js',
 ], 'public/js/main.js');
+
+mix.js([
+    'resources/assets/js/alert.js',
+], 'public/js/alert.js');
