@@ -51,11 +51,11 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show($id)
+    public function show($slug)
     {
         try {
             $news = News::with('category')
-                ->where('id', $id)
+                ->where('slug', $slug)
                 ->where('status', NewsStatus::StatusPublished)
                 ->firstOrFail();
             $category = $news->category;

@@ -10,7 +10,7 @@
                     <ol class="breadcrumb">
                         <li><a href="{{ route('home') }}">{{ trans('pages.home') }}</a></li>
                         @for ($i = count($uriCategory) - 1; $i >= 0; $i--)
-                            <li><a href="{{ route('category', $uriCategory[$i]->id) }}">{{ $uriCategory[$i]->name }}</a></li>
+                            <li><a href="{{ route('category', $uriCategory[$i]->slug) }}">{{ $uriCategory[$i]->name }}</a></li>
                         @endfor
                         <li class="active">{{ $news->category->name }}</li>
                     </ol>
@@ -19,7 +19,7 @@
                             <h1>{{$news->title}}</h1>
                             <ul class="details">
                                 <li>{{ $news->created_at->format(config('news.date_format')) }}</li>
-                                <li><a href="{{ route('category', $news->category->id) }}">{{ $news->category->name }}</a></li>
+                                <li><a href="{{ route('category', $news->category->slug) }}">{{ $news->category->name }}</a></li>
                                 <li>{{ trans('pages.by').$news->user->name }}</li>
                             </ul>
                         </header>

@@ -47,23 +47,32 @@ class HomeController extends Controller
     {
         $keyWord = $request->keyWord;
         $searchNews = News::with(['category', 'likes'])
-            ->where('title', 'like', "%$keyWord%")
-            ->orWhere('description', 'like', "%$keyWord%")
-            ->orWhere('content', 'like', "%$keyWord%")
+            ->where('status', NewsStatus::StatusPublished)
+            ->where(function ($q) use ($keyWord) {
+                $q->where('title', 'like', "%$keyWord%")
+                    ->orWhere('description', 'like', "%$keyWord%")
+                    ->orWhere('content', 'like', "%$keyWord%");
+            })
             ->paginate(config('news.paginate'));
 
         return view('search', compact('searchNews', 'keyWord'));
     }
 
-    public function category($id)
+    public function category($slug)
     {
         try {
-            $category = Category::with('children')->findOrFail($id);
+            $category = Category::with('children')
+                ->where('slug', $slug)
+                ->firstOrFail();
         } catch (ModelNotFoundException $exception) {
             return redirect()->route('home');
         }
 
-        $newsOfCategory = $category->news()->with('likes')->orderBy('created_at', 'desc')->paginate(config('news.paginate'));
+        $newsOfCategory = $category->news()
+            ->with('likes')
+            ->where('status', NewsStatus::StatusPublished)
+            ->orderBy('created_at', 'desc')
+            ->paginate(config('news.paginate'));
 
         $uriCategory = [];
 

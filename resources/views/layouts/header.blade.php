@@ -14,7 +14,7 @@
                         @csrf
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="text" name="keyWord" class="form-control" placeholder="{{ trans('pages.type_something') }}">
+                                <input type="text" name="keyWord" class="form-control" value="{{ $keyWord ?? '' }}" placeholder="{{ trans('pages.type_something') }}">
                                 <div class="input-group-btn">
                                     <button class="btn btn-primary"><i class="ion-search"></i></button>
                                 </div>
@@ -71,7 +71,7 @@
                     @endphp
                     @foreach ($headerCategories as $category)
                         @if (count($category->children) == 0)
-                            <li><a href="{{ route('category', $category->id) }}">{{ $category->name }}</a></li>
+                            <li><a href="{{ route('category', $category->slug) }}">{{ $category->name }}</a></li>
                         @else
                             @include('layouts.headerCategories', ['categories' => $category->children, 'parent' => $category])
                         @endif
