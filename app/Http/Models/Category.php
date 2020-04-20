@@ -10,6 +10,7 @@ class Category extends Model
     protected $fillable = [
         'name',
         'parent_id',
+        'slug',
     ];
 
     public function news()

@@ -20,10 +20,10 @@
                                              alt="{{ $hotNews->first()->title }}">
                                     </figure>
                                     <div class="details">
-                                        <div class="category"><a href="">{{ $hotNews->first()->category->name }}</a>
+                                        <div class="category"><a href="{{ route('category', $hotNews->first()->category->slug) }}">{{ $hotNews->first()->category->name }}</a>
                                         </div>
                                         <h1>
-                                            <a href="{{ route('news.show', $hotNews->first()->id) }}">{{ $hotNews->first()->title }}</a>
+                                            <a href="{{ route('news.show', $hotNews->first()->slug) }}">{{ $hotNews->first()->title }}</a>
                                         </h1>
                                         <div class="time">{{ $hotNews->first()->created_at->format(config('news.date_format')) }}</div>
                                     </div>
@@ -36,13 +36,13 @@
                                     <article class="article-mini">
                                         <div class="inner">
                                             <figure>
-                                                <a href="{{ route('news.show', $news->id) }}">
+                                                <a href="{{ route('news.show', $news->slug) }}">
                                                     <img src="{{ asset('images/news/' . $news->image) }}"
                                                          alt="{{ $news->title }}">
                                                 </a>
                                             </figure>
                                             <div class="padding">
-                                                <h1><a href="{{ route('news.show', $news->id) }}">{{ $news->title }}</a>
+                                                <h1><a href="{{ route('news.show', $news->slug) }}">{{ $news->title }}</a>
                                                 </h1>
                                             </div>
                                         </div>
@@ -65,7 +65,7 @@
                                     <article class="article col-md-12">
                                         <div class="inner">
                                             <figure>
-                                                <a href="{{ route('news.show', $news->id) }}">
+                                                <a href="{{ route('news.show', $news->slug) }}">
                                                     <img src="{{ asset('images/news/' . $news->image) }}"
                                                          alt="{{ $news->title }}">
                                                 </a>
@@ -73,10 +73,10 @@
                                             <div class="padding">
                                                 <div class="detail">
                                                     <div class="time">{{ $news->created_at->format(config('news.date_format')) }}</div>
-                                                    <div class="category"><a href="">{{ $news->category->name }}</a>
+                                                    <div class="category"><a href="{{ route('category', $news->category->slug) }}">{{ $news->category->name }}</a>
                                                     </div>
                                                 </div>
-                                                <h2><a href="{{ route('news.show', $news->id) }}">{{ $news->title }}</a>
+                                                <h2><a href="{{ route('news.show', $news->slug) }}">{{ $news->title }}</a>
                                                 </h2>
                                                 <p>{{ $news->description }}</p>
                                                 <footer>
@@ -85,7 +85,7 @@
                                                         <div>{{ $news->likes->count() }}</div>
                                                     </a>
                                                     <a class="btn btn-primary more"
-                                                       href="{{ route('news.show', $news->id) }}">
+                                                       href="{{ route('news.show', $news->slug) }}">
                                                         <div>{{ trans('pages.more') }}</div>
                                                         <div><i class="ion-ios-arrow-thin-right"></i></div>
                                                     </a>
@@ -111,7 +111,7 @@
                                             <article class="article col-md-6">
                                                 <div class="inner">
                                                     <figure>
-                                                        <a href="{{ route('news.show', $news->id) }}">
+                                                        <a href="{{ route('news.show', $news->slug) }}">
                                                             <img src="{{ asset('images/news/' . $news->image) }}"
                                                                  alt="{{ $news->title }}">
                                                         </a>
@@ -121,11 +121,11 @@
                                                             <div
                                                                 class="time">{{ $news->created_at->format(config('news.date_format')) }}</div>
                                                             <div class="category"><a
-                                                                    href="">{{ $news->category->name }}</a>
+                                                                    href="{{ route('category', $news->category->slug) }}">{{ $news->category->name }}</a>
                                                             </div>
                                                         </div>
                                                         <h2>
-                                                            <a href="{{ route('news.show', $news->id) }}">{{ $news->title }}</a>
+                                                            <a href="{{ route('news.show', $news->slug) }}">{{ $news->title }}</a>
                                                         </h2>
                                                         <p>{{ $news->description }}</p>
                                                         <footer>
@@ -134,7 +134,7 @@
                                                                 <div>{{ $news->likes->count() }}</div>
                                                             </a>
                                                             <a class="btn btn-primary more"
-                                                               href="{{ route('news.show', $news->id) }}">
+                                                               href="{{ route('news.show', $news->slug) }}">
                                                                 <div>{{ trans('pages.more') }}</div>
                                                                 <div><i class="ion-ios-arrow-thin-right"></i></div>
                                                             </a>
@@ -147,14 +147,14 @@
                                                 <article class="article-mini">
                                                     <div class="inner">
                                                         <figure>
-                                                            <a href="{{ route('news.show', $news->id) }}">
+                                                            <a href="{{ route('news.show', $news->slug) }}">
                                                                 <img src="{{ asset('images/news/' . $news->image) }}"
                                                                      alt="{{ $news->title }}">
                                                             </a>
                                                         </figure>
                                                         <div class="padding">
                                                             <h1>
-                                                                <a href="{{ route('news.show', $news->id) }}">{{ $news->title }}</a>
+                                                                <a href="{{ route('news.show', $news->slug) }}">{{ $news->title }}</a>
                                                             </h1>
                                                         </div>
                                                     </div>

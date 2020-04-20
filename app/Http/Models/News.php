@@ -16,6 +16,7 @@ class News extends Model
         'user_id',
         'status',
         'image',
+        'slug',
     ];
 
     public function comments()
