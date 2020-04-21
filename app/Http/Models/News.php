@@ -3,6 +3,7 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class News extends Model
 {
@@ -42,5 +43,13 @@ class News extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function isAuthUserLikedNews(){
+        $like = $this->likes()->where('user_id',  Auth::id());
+        if ($like->count() == 0){
+            return false;
+        }
+        return true;
     }
 }

@@ -13,6 +13,8 @@
         <link rel="stylesheet" href="{{ asset('bower_components/bower-package/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('bower_components/bower-package/css/skins/all.css') }}">
         <link rel="stylesheet" href="{{ asset('bower_components/bower-package/css/demo.css') }}">
+
+        <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
     <body class="skin-orange">
         @include('layouts.header')
@@ -33,5 +35,6 @@
         <script src="{{ asset('bower_components/bower-package/scripts/toast/jquery.toast.min.js') }}"></script>
         <script src="{{ asset('bower_components/bower-package/js/demo.js') }}"></script>
         <script src="{{ asset('bower_components/bower-package/js/e-magz.js') }}"></script>
+        <script src="{{ mix('js/like.js') }}"></script>
     </body>
 </html>

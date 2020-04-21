@@ -31,7 +31,14 @@
                             <div class="col">
                             </div>
                             <div class="col">
-                                <a href="#" class="love"><i class="ion-android-favorite-outline"></i> <div>{{ $news->likes->count() }}</div></a>
+                                @if (Auth::check())
+                                    <a data-href1="{{ route('user.like') }}" data-slug="{{ $news->slug }}" data-error="{{ trans('pages.error') }}" class="love{{ $news->isAuthUserLikedNews() ? ' active' : '' }}">
+                                        <i class="ion-android-favorite"></i>
+                                        <div>{{ $news->likes->count() }}</div>
+                                    </a>
+                                @else
+                                    <a class="love block-click"><i class="ion-android-favorite-outline"></i> <div>{{ $news->likes->count() }}</div></a>
+                                @endif
                             </div>
                         </footer>
                     </article>
