@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="account-dropdown__body">
                                     <div class="account-dropdown__item">
-                                        <a href="#"></i>{{ trans('pages.profile') }}</a>
+                                        <a href="{{ route('user.profile', Auth::user()->username) }}"></i>{{ trans('pages.profile') }}</a>
                                     </div>
                                 </div>
                                 <div class="account-dropdown__body">

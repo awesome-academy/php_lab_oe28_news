@@ -32,7 +32,7 @@
                                     </a></li>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="#"><i class="icon ion-person"></i>{{ trans('pages.profile') }}</a></li>
+                                <li><a href="{{ route('user.profile', Auth::user()->username) }}"><i class="icon ion-person"></i>{{ trans('pages.profile') }}</a></li>
                                 @if (Auth::user()->role_id == App\Enums\UserRole::Admin)
                                     <li><a href="{{ route('admin.news.index') }}"><i class="icon ion-settings"></i>{{ trans('pages.admin') }}</a></li>
                                 @endif

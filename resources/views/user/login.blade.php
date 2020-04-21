@@ -33,7 +33,7 @@
                             <button class="btn btn-primary btn-block">{{ trans('pages.login') }}</button>
                         </div>
                         <div class="form-group text-center">
-                            <span class="text-muted">{{ trans('pages.dont_have_account') }}</span> <a href="">{{ trans('pages.create_one') }}</a>
+                            <span class="text-muted">{{ trans('pages.dont_have_account') }}</span> <a href="{{ route('indexRegister') }}">{{ trans('pages.create_one') }}</a>
                         </div>
                         <div class="title-line">
                             {{ trans('pages.or') }}

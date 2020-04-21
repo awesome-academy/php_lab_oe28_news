@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class RegisterRequest extends FormRequest
+class UserProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +26,13 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'string', 'min:8'],
-            'email' => ['required', 'email', 'unique:users', 'max:255'],
-            'phone_number' => ['required', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:9', 'unique:users'],
-            'username' => ['required', 'max:255', 'unique:users'],
+            'email' => ['required', 'email', 'unique:users,email,' . Auth::user()->id , 'max:255'],
+            'phone_number' => [
+                'required',
+                'regex:/^([0-9\s\-\+\(\)]*)$/',
+                'min:9',
+                'unique:users,phone_number,' . Auth::user()->id
+            ],
         ];
     }
 }
