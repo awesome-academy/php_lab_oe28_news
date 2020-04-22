@@ -47,44 +47,80 @@
                     <div class="comments">
                         <h2 class="title">{{ trans('pages.comments') }}</h2>
                         <div class="comment-list">
-                            <div class="item">
-                                <div class="user">
-                                    <div class="details">
-                                        <h5 class="name"></h5>
-                                        <div class="time"></div>
-                                        <div class="description">
-
+                            @foreach ($news->comments->load('user')->where('parent_id', null) as $comment)
+                                <div class="item comment{{ $comment->id }}">
+                                    <div class="user">
+                                        <div class="details">
+                                            <h5 class="name">{{ $comment->user->name }}</h5>
+                                            <div class="time">{{ $comment->created_at }}</div>
+                                            <div class="description">{{ $comment->content }}</div>
+                                            <footer>
+                                                @if ($comment->user->id == Auth::id())
+                                                    <button class="btn btn-primary btn-sm comment-delete"
+                                                            href="{{ route('user.deleteComment') }}"
+                                                            data-title="{{ trans('pages.news_delete_title') }}"
+                                                            data-error="{{ trans('pages.error') }}"
+                                                            data-id="{{ $comment->id }}">
+                                                        <i>{{ trans('pages.delete') }}</i>
+                                                    </button>
+                                                @endif
+                                            </footer>
                                         </div>
-                                        <footer>
-                                            <a href="#">{{ trans('pages.reply') }}</a>
-                                        </footer>
                                     </div>
-                                </div>
-                                <div class="reply-list">
-                                    <div class="item">
-                                        <div class="user">
-                                            <div class="details">
-                                                <h5 class="name"></h5>
-                                                <div class="time"></div>
-                                                <div class="description">
-
+                                    @if ($comment->children != null)
+                                        <div class="reply-list">
+                                            @foreach ($comment->children->load('user') as $subComment)
+                                                <div class="item comment{{ $subComment->id }} comment{{ $comment->id }}">
+                                                    <div class="user">
+                                                        <div class="details">
+                                                            <h5 class="name">{{ $subComment->user->name }}</h5>
+                                                            <div class="time">{{ $subComment->created_at }}</div>
+                                                            <div class="description">{{ $subComment->content }}</div>
+                                                            <footer>
+                                                                @if ($subComment->user->id == Auth::id())
+                                                                    <button class="btn btn-primary btn-sm comment-delete"
+                                                                            href="{{ route('user.deleteComment') }}"
+                                                                            data-title="{{ trans('pages.news_delete_title') }}"
+                                                                            data-error="{{ trans('pages.error') }}"
+                                                                            data-id="{{ $subComment->id }}">
+                                                                        <i>{{ trans('pages.delete') }}</i>
+                                                                    </button>
+                                                                @endif
+                                                            </footer>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <footer>
-                                                    <a href="#">{{ trans('pages.reply') }}</a>
-                                                </footer>
-                                            </div>
+                                            @endforeach
+                                                <div class="item">
+                                                    <div class="user">
+                                                        @include('common.errors')
+                                                        <form class="row" action="{{ route('user.comment', $news->slug) }}" method="POST">
+                                                            @csrf
+                                                            <div class="form-group col-md-12">
+                                                                <label for="message">{{ trans('pages.reply') }} <span class="required"></span></label>
+                                                                <input class="form-control" name="comment_content" placeholder="{{ trans('pages.write_comment') }} ..."></input>
+                                                                <input type="hidden" name="parent_id" value="{{ $comment->id }}"/>
+                                                            </div>
+                                                            <div class="form-group col-md-12">
+                                                                <button class="btn btn-primary btn-sm">{{trans('pages.reply')}}</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </div>
-                            </div>
+                            @endforeach
                         </div>
-                        <form class="row">
+                        @include('common.errors')
+                        <form class="row" action="{{ route('user.comment', $news->slug) }}" method="POST">
+                            @csrf
                             <div class="col-md-12">
                                 <h3 class="title">{{ trans('pages.leave_your_comments') }}</h3>
                             </div>
                             <div class="form-group col-md-12">
                                 <label for="message">{{ trans('pages.comment') }} <span class="required"></span></label>
-                                <textarea class="form-control" name="message" placeholder="{{ trans('pages.write_comment') }} ..."></textarea>
+                                <textarea class="form-control" name="comment_content" placeholder="{{ trans('pages.write_comment') }} ..."></textarea>
                             </div>
                             <div class="form-group col-md-12">
                                 <button class="btn btn-primary">{{trans('pages.comment')}}</button>

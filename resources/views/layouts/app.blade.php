@@ -33,6 +33,7 @@
         <script src="{{ asset('bower_components/bower-package/scripts/easescroll/jquery.easeScroll.js') }}"></script>
         <script src="{{ asset('bower_components/bower-package/scripts/sweetalert/dist/sweetalert.min.js') }}"></script>
         <script src="{{ asset('bower_components/bower-package/scripts/toast/jquery.toast.min.js') }}"></script>
+        <script src="{{ asset('bower_components/bower-package/admin/vendor/sweetalert/sweetalert.min.js') }}"></script>
         <script src="{{ asset('bower_components/bower-package/js/demo.js') }}"></script>
         <script src="{{ asset('bower_components/bower-package/js/e-magz.js') }}"></script>
         <script src="{{ mix('js/like.js') }}"></script>
