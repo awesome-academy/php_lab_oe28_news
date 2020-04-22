@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', trans('pages.categories'))
+@section('title', trans('pages.edit'))
 
 @section('menu')
     <li><a href="{{ route('admin.news.index') }}">{{ trans('pages.news') }}</a></li>
@@ -14,18 +14,20 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="card-header">{{ trans('pages.add_category') }}</div>
+                        <div class="card-header">{{ $curCategory->name }} ({{ $curCategory->parent->name ?? '' }})</div>
                         <div class="card-body">
                             @include('common.errors')
-                            <form action="{{ route('categories.store') }}" method="post" novalidate="novalidate">
+                            <form action="{{ route('categories.update', $curCategory->id) }}" method="post" novalidate="novalidate">
                                 @csrf
+                                @method('PATCH')
                                 <div class="form-group">
-                                    <label class="control-label mb-1">{{ trans('pages.category_name') }}</label>
-                                    <input name="name" type="text" class="form-control">
+                                    <label class="control-label mb-1">{{ trans('pages.rename_category') }}</label>
+                                    <input name="name" type="text" class="form-control" value="{{ $curCategory->name }}">
                                 </div>
                                 <div class="form-group has-success">
                                     <label class="control-label mb-1">{{ trans('pages.parent') }}</label>
                                     <select name="parent_id" class="form-control">
+                                        <option value="-1"></option>
                                         <option value="">{{ trans('pages.root_category') }}</option>
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}">{{ $category->name }}  ( {{ $category->parent->name ?? '' }} )</option>
@@ -34,7 +36,7 @@
                                 </div>
                                 <div>
                                     <button type="submit" class="btn btn-lg btn-info btn-block">
-                                        <span >{{ trans('pages.add') }}</span>
+                                        <span >{{ trans('pages.update') }}</span>
                                     </button>
                                 </div>
                             </form>

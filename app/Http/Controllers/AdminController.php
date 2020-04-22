@@ -54,4 +54,28 @@ class AdminController extends Controller
 
         return view('admin.news', compact('listNews', 'curCategory'));
     }
+
+    public function indexCategories()
+    {
+        $rootCategories = Category::with('children')
+            ->where('parent_id', null)
+            ->get();
+
+        return view('admin.categories', compact('rootCategories'));
+    }
+
+    public function editCategory($id)
+    {
+        try {
+            $curCategory = Category::findOrFail($id);
+        } catch (ModelNotFoundException $exception) {
+            return redirect()->route('admin.Categories.index');
+        }
+
+        $rootCategories = Category::with('children')
+            ->where('parent_id', null)
+            ->get();
+
+        return view('admin.editcategory', compact('curCategory', 'rootCategories'));
+    }
 }
