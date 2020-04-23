@@ -49,4 +49,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'as' => 'admin.'], f
 Route::group(['prefix' => 'user', 'middleware' => 'auth', 'as' => 'user.'], function () {
     Route::post('/update', 'UserController@updateProfile')->name('update');
     Route::get('/{username}', 'UserController@profile')->name('profile');
+    Route::post('/like', 'UserController@handleLike')->name('like');
 });

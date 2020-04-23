@@ -80,10 +80,16 @@
                                                 </h2>
                                                 <p>{{ $news->description }}</p>
                                                 <footer>
-                                                    <a href="#" class="love"><i
-                                                            class="ion-android-favorite-outline"></i>
-                                                        <div>{{ $news->likes->count() }}</div>
-                                                    </a>
+                                                    <div class="col">
+                                                        @if (Auth::check())
+                                                            <a data-href1="{{ route('user.like') }}" data-slug="{{ $news->slug }}" data-error="{{ trans('pages.error') }}" class="love{{ $news->isAuthUserLikedNews() ? ' active' : '' }}">
+                                                                <i class="ion-android-favorite"></i>
+                                                                <div>{{ $news->likes->count() }}</div>
+                                                            </a>
+                                                        @else
+                                                            <a class="love block-click"><i class="ion-android-favorite-outline"></i> <div>{{ $news->likes->count() }}</div></a>
+                                                        @endif
+                                                    </div>
                                                     <a class="btn btn-primary more"
                                                        href="{{ route('news.show', $news->slug) }}">
                                                         <div>{{ trans('pages.more') }}</div>
@@ -129,10 +135,16 @@
                                                         </h2>
                                                         <p>{{ $news->description }}</p>
                                                         <footer>
-                                                            <a href="#" class="love"><i
-                                                                    class="ion-android-favorite-outline"></i>
-                                                                <div>{{ $news->likes->count() }}</div>
-                                                            </a>
+                                                            <div class="col">
+                                                                @if (Auth::check())
+                                                                    <a data-href1="{{ route('user.like') }}" data-slug="{{ $news->slug }}" data-error="{{ trans('pages.error') }}" class="love{{ $news->isAuthUserLikedNews() ? ' active' : '' }}">
+                                                                        <i class="ion-android-favorite"></i>
+                                                                        <div>{{ $news->likes->count() }}</div>
+                                                                    </a>
+                                                                @else
+                                                                    <a class="love block-click"><i class="ion-android-favorite-outline"></i> <div>{{ $news->likes->count() }}</div></a>
+                                                                @endif
+                                                            </div>
                                                             <a class="btn btn-primary more"
                                                                href="{{ route('news.show', $news->slug) }}">
                                                                 <div>{{ trans('pages.more') }}</div>

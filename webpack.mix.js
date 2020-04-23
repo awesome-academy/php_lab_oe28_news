@@ -21,3 +21,7 @@ mix.js([
 mix.js([
     'resources/assets/js/alert.js',
 ], 'public/js/alert.js');
+
+mix.js([
+    'resources/assets/js/like.js',
+], 'public/js/like.js');
