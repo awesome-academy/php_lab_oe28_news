@@ -23,5 +23,6 @@ mix.js([
 ], 'public/js/alert.js');
 
 mix.js([
+    'resources/assets/js/comment.js',
     'resources/assets/js/like.js',
 ], 'public/js/like.js');
