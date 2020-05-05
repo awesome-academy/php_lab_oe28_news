@@ -38,6 +38,32 @@
                                         <a href="{{ route('home') }}"></i>{{ trans('pages.home') }}</a>
                                     </div>
                                 </div>
+                                @if (Auth::user()->role_id == App\Enums\UserRole::Admin)
+                                    <div class="account-dropdown__body">
+                                        <div class="account-dropdown__item">
+                                            <a href="{{ route('admin.news.index') }}"></i>{{ trans('pages.admin') }}</a>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if (Auth::user()->role_id == App\Enums\UserRole::Admin || Auth::user()->role_id == App\Enums\UserRole::Reviewer)
+                                    <div class="account-dropdown__body">
+                                        <div class="account-dropdown__item">
+                                            <a href="{{ route('review.index') }}"></i>{{ trans('pages.review_news') }}</a>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if (Auth::user()->role_id == App\Enums\UserRole::Admin || Auth::user()->role_id == App\Enums\UserRole::Writer)
+                                    <div class="account-dropdown__body">
+                                        <div class="account-dropdown__item">
+                                            <a href="#"></i>{{ trans('pages.write_news') }}</a>
+                                        </div>
+                                    </div>
+                                @endif
+                                <div class="account-dropdown__body">
+                                    <div class="account-dropdown__item">
+                                        <a href="{{ route('home') }}"></i>{{ trans('pages.home') }}</a>
+                                    </div>
+                                </div>
                                 <div class="account-dropdown__footer">
                                     <a href="{{ route('logout') }}"></i>{{ trans('pages.logout') }}</a>
                                 </div>

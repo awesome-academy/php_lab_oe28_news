@@ -46,10 +46,19 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'as' => 'admin.'], f
     });
 });
 
+
 Route::group(['prefix' => 'user', 'middleware' => 'auth', 'as' => 'user.'], function () {
     Route::post('/update', 'UserController@updateProfile')->name('update');
     Route::get('/{username}', 'UserController@profile')->name('profile');
     Route::post('/like', 'UserController@handleLike')->name('like');
     Route::post('/comment/{slug}', 'UserController@comment')->name('comment');
     Route::post('/comment', 'UserController@deleteComment')->name('deleteComment');
+});
+
+Route::group(['prefix' => 'review', 'middleware' => 'review', 'as' => 'review.'], function () {
+    Route::get('/search', 'ReviewController@searchNews')->name('search');
+    Route::get('/', 'ReviewController@index')->name('index');
+    Route::get('/status/{id}/{statusId}', 'NewsController@status')->name('status');
+    Route::get('/category/{id}', 'ReviewController@category')->name('category');
+    Route::get('/{id}', 'ReviewController@editNews')->name('news');
 });

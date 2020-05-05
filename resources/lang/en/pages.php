@@ -84,4 +84,7 @@ return [
     'rename_category' => 'Rename category',
     'edit_category' => 'Edit category',
     'select_category' => 'Select category',
+    'review_news' => 'Review news',
+    'approve' => 'Approve',
+    'review' => 'Review',
 ];
