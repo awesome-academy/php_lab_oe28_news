@@ -3,20 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Enums\NewsStatus;
-use App\Http\Models\Category;
-use App\Http\Models\News;
+use App\Repositories\Category\CategoryRepositoryInterface;
+use App\Repositories\News\NewsRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class WriteController extends Controller
 {
+    protected $newsRepo;
+    protected $categoryRepo;
+
+    public function __construct(
+        NewsRepositoryInterface $newsRepo,
+        CategoryRepositoryInterface $categoryRepo
+    ) {
+        $this->newsRepo = $newsRepo;
+        $this->categoryRepo = $categoryRepo;
+    }
+
     public function index()
     {
-        $listNews = News::with('category')
-            ->where('user_id', Auth::user()->id)
-            ->orderBy('created_at', 'desc')
-            ->paginate(config('news.paginate'));
+        $listNews = $this->newsRepo->getAllOfWriter();
 
         return view('writer.mynews', compact('listNews'));
     }
@@ -24,7 +32,7 @@ class WriteController extends Controller
     public function category($id)
     {
         try {
-            $curCategory = Category::findOrFail($id);
+            $curCategory = $this->categoryRepo->findOrFail($id);
         } catch (ModelNotFoundException $exception) {
             return redirect()->route('review.index');
         }
@@ -45,14 +53,7 @@ class WriteController extends Controller
     public function searchNews(Request $request)
     {
         $keyWord = $request->keyWord;
-        $listNews = News::with('category')
-            ->where('user_id', Auth::user()->id)
-            ->where(function ($q) use ($keyWord) {
-                $q->where('title', 'like', "%$keyWord%")
-                    ->orWhere('description', 'like', "%$keyWord%")
-                    ->orWhere('content', 'like', "%$keyWord%");
-            })
-            ->paginate(config('news.paginate'));
+        $listNews = $this->newsRepo->searchNewsOfUser($keyWord, Auth::id());
 
         return view('writer.mynews', compact('listNews', 'keyWord'));
     }
@@ -60,7 +61,7 @@ class WriteController extends Controller
     public function editNews($id)
     {
         try {
-            $news = News::findOrFail($id);
+            $news = $this->newsRepo->findOrFail($id);
         } catch (ModelNotFoundException $exception) {
             return redirect()->back();
         }

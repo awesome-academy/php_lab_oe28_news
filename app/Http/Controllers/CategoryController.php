@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Models\Category;
-use App\Http\Models\News;
 use App\Http\Requests\CategoryRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
+use App\Repositories\Category\CategoryRepositoryInterface;
+use App\Repositories\News\NewsRepositoryInterface;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
-    public function __construct()
-    {
+    protected $categoryRepo;
+    protected $newsRepo;
+
+    public function __construct(
+        CategoryRepositoryInterface $categoryRepo,
+        NewsRepositoryInterface $newsRepo
+    ) {
         $this->middleware('admin');
+        $this->categoryRepo = $categoryRepo;
+        $this->newsRepo = $newsRepo;
     }
 
     /**
@@ -44,18 +49,13 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        if ($request->parent_id == null) {
-            Category::create([
-                'name' => $request->name,
-                'slug' => Str::slug($request->name),
-            ]);
-        } else {
-            Category::create([
-                'name' => $request->name,
-                'parent_id' => $request->parent_id,
-                'slug' => Str::slug($request->name) . $request->parent_id,
-                ]);
-        }
+        $data = [
+            'name' => $request->name,
+            'parent_id' => $request->parent_id,
+            'slug' => Str::slug($request->name) . $request->parent_id,
+        ];
+
+        $this->categoryRepo->create($data);
 
         return redirect()->back();
     }
@@ -91,17 +91,14 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, $id)
     {
-        try {
-            $category = Category::findOrFail($id);
-        } catch (ModelNotFoundException $exception) {
-            return redirect()->back();
-        }
-        $category->name = $request->name;
+        $data = $request->only(['name']);
+        $data['slug'] = Str::slug($request->name) . $request->parent_id;
+
         if ($request->parent_id != -1) {
-            $category->parent_id = $request->parent_id;
+            $data['parent_id'] = $request->parent_id;
         }
 
-        $category->save();
+        $this->categoryRepo->update($id, $data);
 
         return redirect()->back();
     }
@@ -114,8 +111,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        News::where('category_id', $id)->delete();
-        Category::destroy($id);
+        $this->newsRepo->deleteByAttributes(['category_id' => $id]);
+        $this->categoryRepo->delete($id);
 
         return json_encode(['message' => trans('pages.deleted_category')]);
     }

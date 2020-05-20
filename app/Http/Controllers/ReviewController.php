@@ -3,22 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Enums\NewsStatus;
-use App\Http\Models\Category;
-use App\Http\Models\News;
+use App\Repositories\Category\CategoryRepositoryInterface;
+use App\Repositories\News\NewsRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+    protected $newsRepo;
+    protected $categoryRepo;
+
+    public function __construct(
+        NewsRepositoryInterface $newsRepo,
+        CategoryRepositoryInterface $categoryRepo
+    ) {
+        $this->newsRepo = $newsRepo;
+        $this->categoryRepo = $categoryRepo;
+    }
+
     public function index()
     {
-        $listNews = News::with('category')
-            ->whereIn('status', [
-                NewsStatus::StatusNew,
-                NewsStatus::StatusApproved,
-                NewsStatus::StatusRejected
-            ])->orderBy('created_at', 'desc')
-            ->paginate(config('news.paginate'));
+        $listNews = $this->newsRepo->getAllForReview();
 
         return view('reviewer.review', compact('listNews'));
     }
@@ -26,7 +31,7 @@ class ReviewController extends Controller
     public function category($id)
     {
         try {
-            $curCategory = Category::findOrFail($id);
+            $curCategory = $this->categoryRepo->findOrFail($id);
         } catch (ModelNotFoundException $exception) {
             return redirect()->route('review.index');
         }
@@ -46,12 +51,12 @@ class ReviewController extends Controller
     public function searchNews(Request $request)
     {
         $keyWord = $request->keyWord;
-        $listNews = News::with('category')
-            ->where('title', 'like', "%$keyWord%")
-            ->orWhere('description', 'like', "%$keyWord%")
-            ->orWhere('id', 'like', "%$keyWord%")
-            ->orWhere('content', 'like', "%$keyWord%")
-            ->paginate(config('news.paginate'));
+        $listNews = $this->newsRepo->searchByKeyWordWithStatus($keyWord, [
+            NewsStatus::StatusNew,
+            NewsStatus::StatusApproved,
+            NewsStatus::StatusRejected,
+            NewsStatus::StatusNeedEditMore,
+        ]);
 
         return view('reviewer.review', compact('listNews', 'keyWord'));
     }
@@ -59,7 +64,7 @@ class ReviewController extends Controller
     public function editNews($id)
     {
         try {
-            $news = News::findOrFail($id);
+            $news = $this->newsRepo->findOrFail($id);
         } catch (ModelNotFoundException $exception) {
             return redirect()->back();
         }

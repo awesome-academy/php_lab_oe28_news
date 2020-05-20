@@ -2,17 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Models\Category;
-use App\Http\Models\News;
+use App\Repositories\Category\CategoryRepositoryInterface;
+use App\Repositories\News\NewsRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 
 class AdminController extends Controller
 {
+    protected $newsRepo;
+    protected $categoryRepo;
+
+    public function __construct(
+        NewsRepositoryInterface $newsRepo,
+        CategoryRepositoryInterface $categoryRepo
+    ) {
+        $this->newsRepo = $newsRepo;
+        $this->categoryRepo = $categoryRepo;
+    }
+
     public function indexNews()
     {
-        $listNews = News::orderBy('created_at', 'desc')->paginate(config('news.paginate'));
+        $listNews = $this->newsRepo->getAllWithPaginate();
 
         return view('admin.news', compact('listNews'));
     }
@@ -20,7 +30,7 @@ class AdminController extends Controller
     public function showNews($id)
     {
         try {
-            $news = News::with('category')->findOrFail($id);
+            $news = $this->newsRepo->findOrFail($id);
         } catch (ModelNotFoundException $exception) {
             return redirect()->route('admin.news.index');
         }
@@ -31,11 +41,7 @@ class AdminController extends Controller
     public function searchNews(Request $request)
     {
         $keyWord = $request->keyWord;
-        $listNews = News::with('category')
-            ->where('title', 'like', "%$keyWord%")
-            ->orWhere('description', 'like', "%$keyWord%")
-            ->orWhere('content', 'like', "%$keyWord%")
-            ->paginate(config('news.paginate'));
+        $listNews = $this->newsRepo->searchByKeyWord($keyWord);
 
         return view('admin.news', compact('listNews', 'keyWord'));
     }
@@ -43,7 +49,7 @@ class AdminController extends Controller
     public function category($id)
     {
         try {
-            $curCategory = Category::findOrFail($id);
+            $curCategory = $this->categoryRepo->findOrFail($id);
         } catch (ModelNotFoundException $exception) {
             return redirect()->route('admin.news.index');
         }
@@ -57,9 +63,7 @@ class AdminController extends Controller
 
     public function indexCategories()
     {
-        $rootCategories = Category::with('children')
-            ->where('parent_id', null)
-            ->get();
+        $rootCategories = $this->categoryRepo->findByAttributes(['parent_id' => null])->load('children');
 
         return view('admin.categories', compact('rootCategories'));
     }
@@ -67,14 +71,12 @@ class AdminController extends Controller
     public function editCategory($id)
     {
         try {
-            $curCategory = Category::findOrFail($id);
+            $curCategory = $this->categoryRepo->findOrFail($id);
         } catch (ModelNotFoundException $exception) {
-            return redirect()->route('admin.Categories.index');
+            return redirect()->route('admin.categories.index');
         }
 
-        $rootCategories = Category::with('children')
-            ->where('parent_id', null)
-            ->get();
+        $rootCategories = $this->categoryRepo->findByAttributes(['parent_id' => null])->load('children');
 
         return view('admin.editcategory', compact('curCategory', 'rootCategories'));
     }
