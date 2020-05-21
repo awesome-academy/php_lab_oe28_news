@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Comment;
-use App\Http\Models\News;
-use App\Http\Models\User;
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\UserProfileRequest;
+use App\Repositories\News\NewsRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    protected $newsRepo;
+
+    public function __construct(NewsRepositoryInterface $newsRepo)
+    {
+        $this->newsRepo = $newsRepo;
+    }
+
     public function profile()
     {
         return view('user.profile');
@@ -33,7 +39,12 @@ class UserController extends Controller
 
     public function handleLike(Request $request)
     {
-        $news = News::where('slug', $request->slug)->first();
+        try {
+            $news = $this->newsRepo->findByAttributesGetOne(['slug' => $request->slug]);
+        } catch (ModelNotFoundException $exception) {
+            return redirect()->back()->withErrors(trans('pages.error'));
+        }
+
         if ($news->isAuthUserLikedNews()) {
             $news->likes()->detach(Auth::id());
 
@@ -47,7 +58,7 @@ class UserController extends Controller
     public function comment(CommentRequest $request, $slug)
     {
         try {
-            $news = News::where('slug', $slug)->firstOrFail();
+            $news = $this->newsRepo->findByAttributesGetOne(['slug' => $slug]);
         } catch (ModelNotFoundException $exception) {
             return redirect()->back()->withErrors(trans('pages.error'));
         }

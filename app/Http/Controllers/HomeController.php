@@ -3,36 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Enums\NewsStatus;
-use App\Http\Models\Category;
-use App\Http\Models\News;
+use App\Repositories\Category\CategoryRepositoryInterface;
+use App\Repositories\News\NewsRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    protected $newsRepo;
+    protected $categoryRepo;
+
+    public function __construct(
+        NewsRepositoryInterface $newsRepo,
+        CategoryRepositoryInterface $categoryRepo
+    ) {
+        $this->newsRepo = $newsRepo;
+        $this->categoryRepo = $categoryRepo;
+    }
+
     public function index()
     {
-        $hotNews = News::with('category')
-            ->where('status', NewsStatus::StatusPublished)
-            ->where('hot', config('news.hot.yes'))
-            ->orderBy('created_at', 'desc')
-            ->take(config('news.hot.take'))
-            ->get();
-        $latestNews = News::with('category')
-            ->where('status', NewsStatus::StatusPublished)
-            ->orderBy('created_at', 'desc')
-            ->take(config('news.latest.take'))
-            ->get();
-        $rootCategories = Category::with('news')
-            ->where('parent_id', null)
-            ->get();
+        $hotNews = $this->newsRepo->getHotNews();
+        $latestNews = $this->newsRepo->getLatestNews();
+        $rootCategories = $this->categoryRepo->findByAttributes(['parent_id' => null])->load('news');
 
         $listCategories = [];
 
         foreach ($rootCategories as $rootCategory) {
             $collection = collect();
 
-            foreach ($this->allChildCategoriesWithNews($rootCategory) as $category) {
+            foreach ($this->categoryRepo->allChildCategoriesWithNews($rootCategory) as $category) {
                 $collection = $collection->merge($category->news->where('status', NewsStatus::StatusPublished));
             }
 
@@ -46,14 +46,7 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $keyWord = $request->keyWord;
-        $searchNews = News::with(['category', 'likes'])
-            ->where('status', NewsStatus::StatusPublished)
-            ->where(function ($q) use ($keyWord) {
-                $q->where('title', 'like', "%$keyWord%")
-                    ->orWhere('description', 'like', "%$keyWord%")
-                    ->orWhere('content', 'like', "%$keyWord%");
-            })
-            ->paginate(config('news.paginate'));
+        $searchNews = $this->newsRepo->searchByKeyWordWithStatus($keyWord, [NewsStatus::StatusPublished])->load('category', 'likes');
 
         return view('search', compact('searchNews', 'keyWord'));
     }
@@ -61,9 +54,7 @@ class HomeController extends Controller
     public function category($slug)
     {
         try {
-            $category = Category::with('children')
-                ->where('slug', $slug)
-                ->firstOrFail();
+            $category = $this->categoryRepo->findByAttributesGetOne(['slug' => $slug]);
         } catch (ModelNotFoundException $exception) {
             return redirect()->route('home');
         }
@@ -83,18 +74,5 @@ class HomeController extends Controller
         }
 
         return view('category', compact('newsOfCategory', 'category', 'uriCategory'));
-    }
-
-    public function allChildCategoriesWithNews($category = null)
-    {
-        $childCategories = $category->children;
-
-        foreach ($childCategories as $child)
-        {
-            $child->load('news', 'children');
-            $childCategories = $childCategories->merge($this->allChildCategoriesWithNews($child));
-        }
-
-        return $childCategories;
     }
 }

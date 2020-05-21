@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Enums\NewsStatus;
-use App\Http\Models\News;
 use App\Http\Requests\NewsRequest;
+use App\Repositories\News\NewsRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
-    public function __construct()
+    protected $newsRepo;
+
+    public function __construct(NewsRepositoryInterface $newsRepo)
     {
         $this->middleware('admin')->except('show', 'status', 'store', 'update');
+        $this->newsRepo = $newsRepo;
     }
 
     /**
@@ -62,7 +64,7 @@ class NewsController extends Controller
             }
         }
 
-        News::create([
+        $this->newsRepo->create([
             'title' => $request->title,
             'category_id' => $request->category_id,
             'description' => $request->description,
@@ -86,10 +88,13 @@ class NewsController extends Controller
     public function show($slug)
     {
         try {
-            $news = News::with('category')
-                ->where('slug', $slug)
-                ->where('status', NewsStatus::StatusPublished)
-                ->firstOrFail();
+            $data = [
+                'slug' => $slug,
+                'status' => NewsStatus::StatusPublished,
+            ];
+
+            $news = $this->newsRepo->findByAttributesGetOne($data);
+
             $category = $news->category;
 
             $uriCategory = [];
@@ -126,17 +131,15 @@ class NewsController extends Controller
     public function update(NewsRequest $request, $id)
     {
         try {
-            $news = News::findOrFail($id);
+            $news = $this->newsRepo->findOrFail($id);
         } catch (ModelNotFoundException $exception) {
             return redirect()->back();
         }
 
-        if ($request->category_id != $news->category_id) $news->category_id = $request->category_id;
-        if ($request->has('hot')) {
-            $news->hot = $request->hot;
-        } else {
-            $news->hot = config('news.hot.no');
-        }
+        $data = $request->only($news->getFillable());
+
+        $data['hot'] = $request->hot ?? config('news.hot.no');
+        $data['content'] = $request->news_content;
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -149,17 +152,13 @@ class NewsController extends Controller
 
                 $file->move('images/news', $name);
                 if (file_exists('images/news/' . $news->image)) unlink('images/news/' . $news->image);
-                $news->image = $name;
+                $data['image'] = $name;
             } else {
                 return redirect()->back()->withErrors(trans('pages.image_format'));
             }
         }
 
-        if ($request->has('title')) $news->title = $request->title;
-        if ($request->has('description')) $news->description = $request->description;
-        if ($request->has('news_content')) $news->content = $request->news_content;
-
-        $news->save();
+        $this->newsRepo->update($id, $data);
 
         return redirect()->back();
     }
@@ -172,22 +171,17 @@ class NewsController extends Controller
      */
     public function destroy($id)
     {
-        News::destroy($id);
+        $this->newsRepo->delete($id);
 
         return json_encode(['success' => trans('pages.news_delete_success')]);
     }
 
     public function status($id, $statusId)
     {
-        try {
-            $news = News::findOrFail($id);
-        } catch (ModelNotFoundException $exception) {
+        if ($this->newsRepo->update($id, ['status' => $statusId])) {
+            return redirect()->back();
+        } else {
             return redirect()->back()->withErrors(trans('pages.failed'));
         }
-
-        $news->status = $statusId;
-        $news->save();
-
-        return redirect()->back();
     }
 }
