@@ -40,7 +40,7 @@
                                     <li><a href="{{ route('review.index') }}"><i class="icon ion-eye"></i>{{ trans('pages.review_news') }}</a></li>
                                 @endif
                                 @if (Auth::user()->role_id == App\Enums\UserRole::Admin || Auth::user()->role_id == App\Enums\UserRole::Writer)
-                                    <li><a href=""><i class="icon ion-compose"></i>{{ trans('pages.write_news') }}</a></li>
+                                    <li><a href="{{ route('write.createNews') }}"><i class="icon ion-compose"></i>{{ trans('pages.write_news') }}</a></li>
                                 @endif
                                 <li class="dropdown-divider"></li>
                                 <li><a href="{{ route('logout') }}"><i class="icon ion-log-out"></i>{{ trans('pages.logout') }}</a></li>

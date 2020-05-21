@@ -20,6 +20,7 @@ mix.js([
 
 mix.js([
     'resources/assets/js/alert.js',
+    'resources/assets/js/photo.js',
 ], 'public/js/alert.js');
 
 mix.js([

@@ -24,7 +24,7 @@
                         </header>
                         <div class="main">
                             <b>{{ $news->description }}</b>
-                            <p>{{ $news->content }}</p>
+                            <p>{!!  $news->content !!}</p>
                         </div>
                         <footer>
                             <div class="col">

@@ -86,5 +86,9 @@ return [
     'select_category' => 'Select category',
     'review_news' => 'Review news',
     'approve' => 'Approve',
+    'my_news' => 'My news',
+    'edit_news' => 'Edit news',
+    'insert' => 'Insert',
+    'insert_photo' => 'Insert photo to content',
     'review' => 'Review',
 ];
