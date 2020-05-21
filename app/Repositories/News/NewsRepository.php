@@ -98,4 +98,11 @@ class NewsRepository extends BaseRepository implements NewsRepositoryInterface
             ->orderBy('created_at', 'desc')
             ->get();
     }
+
+    public function getAllNewsOfMonth($month, $year)
+    {
+        return $this->model->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->get();
+    }
 }

@@ -89,4 +89,7 @@ return [
     'review' => 'Duyệt',
     'report' => 'Báo cáo',
     'news_of_week' => 'Bài viết trong tuần',
+    'chart' => 'Biểu đồ',
+    'news_of_month' => "Bài viết trong tháng",
+    'news_of_year' => "Bài viết trong năm",
 ];

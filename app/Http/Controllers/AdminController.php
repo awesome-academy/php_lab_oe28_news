@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\ReportMail;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Repositories\News\NewsRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -82,5 +83,16 @@ class AdminController extends Controller
         $rootCategories = $this->categoryRepo->findByAttributes(['parent_id' => null])->load('children');
 
         return view('admin.editcategory', compact('curCategory', 'rootCategories'));
+    }
+
+    public function chart()
+    {
+        $data = [];
+
+        for ($i = 0; $i < config('news.number_of_months'); $i++) {
+            $data[$i] = $this->newsRepo->getAllNewsOfMonth($i + 1, Carbon::now()->year)->count();
+        }
+
+        return view('admin.chart', compact('data'));
     }
 }

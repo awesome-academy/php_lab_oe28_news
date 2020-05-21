@@ -27,3 +27,7 @@ mix.js([
     'resources/assets/js/comment.js',
     'resources/assets/js/like.js',
 ], 'public/js/like.js');
+
+mix.js([
+    'resources/assets/js/chart.js',
+], 'public/js/chart.js');

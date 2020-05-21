@@ -77,5 +77,6 @@
 <script src="{{ asset('bower_components/bower-package/admin/vendor/sweetalert/sweetalert.min.js') }}"></script>
 <script src="{{ asset('bower_components/bower-package/admin/js/main.js') }}"></script>
 <script src="{{ mix('js/alert.js') }}"></script>
+<script src="{{ mix('js/chart.js') }}"></script>
 </body>
 </html>
