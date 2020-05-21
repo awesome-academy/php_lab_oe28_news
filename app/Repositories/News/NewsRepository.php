@@ -5,6 +5,7 @@ namespace App\Repositories\News;
 use App\Enums\NewsStatus;
 use App\Http\Models\News;
 use App\Repositories\BaseRepository;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class NewsRepository extends BaseRepository implements NewsRepositoryInterface
@@ -89,5 +90,12 @@ class NewsRepository extends BaseRepository implements NewsRepositoryInterface
                     ->orWhere('content', 'like', "%$keyWord%");
             })
             ->paginate(config('news.paginate'));
+    }
+
+    public function getAllOfCurrentWeek()
+    {
+        return $this->model->where('created_at', '>=' , Carbon::now()->startOfWeek())
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 }

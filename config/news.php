@@ -26,4 +26,9 @@ return[
         3 => 'Need Edit More',
         4 => 'New',
     ],
+
+    'report' => [
+        'day' => 0,
+        'time' => '08:00',
+    ]
 ];

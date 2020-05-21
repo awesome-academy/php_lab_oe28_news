@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\CronReport::class,
     ];
 
     /**
@@ -24,7 +24,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('admin:report')
+            ->timezone('Asia/Ho_Chi_Minh')
+            ->weeklyOn(config('news.report.day'), config('news.report.time'));
     }
 
     /**

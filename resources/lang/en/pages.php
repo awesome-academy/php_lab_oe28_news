@@ -91,4 +91,6 @@ return [
     'insert' => 'Insert',
     'insert_photo' => 'Insert photo to content',
     'review' => 'Review',
+    'report' => 'Report',
+    'news_of_week' => 'News of week',
 ];
