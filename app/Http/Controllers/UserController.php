@@ -2,20 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Models\Comment;
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\UserProfileRequest;
+use App\Repositories\Comment\CommentRepositoryInterface;
 use App\Repositories\News\NewsRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     protected $newsRepo;
+    protected $userRepo;
+    protected $commentRepo;
 
-    public function __construct(NewsRepositoryInterface $newsRepo)
-    {
+    public function __construct(
+        NewsRepositoryInterface $newsRepo,
+        UserRepositoryInterface $userRepo,
+        CommentRepositoryInterface $commentRepo
+    ) {
         $this->newsRepo = $newsRepo;
+        $this->userRepo = $userRepo;
+        $this->commentRepo = $commentRepo;
     }
 
     public function profile()
@@ -25,13 +33,13 @@ class UserController extends Controller
 
     public function updateProfile(UserProfileRequest $request)
     {
-        $user = Auth::user();
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+        ];
 
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone_number = $request->phone_number;
-
-        $user->save();
+        $this->userRepo->update(Auth::id(), $data);
 
         return redirect()->back()->with('success', trans('pages.successful'));
     }
@@ -46,11 +54,11 @@ class UserController extends Controller
         }
 
         if ($news->isAuthUserLikedNews()) {
-            $news->likes()->detach(Auth::id());
+            $this->userRepo->unlikesNews($news);
 
             return json_encode(['error' => trans('delete')]);
         }
-        $news->likes()->attach(Auth::id());
+        $this->userRepo->likesNews($news);
 
         return json_encode(['success' => trans('pages.success')]);
     }
@@ -63,7 +71,7 @@ class UserController extends Controller
             return redirect()->back()->withErrors(trans('pages.error'));
         }
 
-        Comment::create([
+        $this->commentRepo->create([
             'content' => $request->comment_content,
             'user_id' => Auth::id(),
             'news_id' => $news->id,
@@ -75,9 +83,12 @@ class UserController extends Controller
 
     public function deleteComment(Request $request)
     {
-        $comment = Comment::where('id', $request->id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
+        $data = [
+            'id' => $request->id,
+            'user_id' => Auth::id(),
+        ];
+
+        $comment = $this->commentRepo->findByAttributesGetOne($data);
         if ($comment->children != null) {
             $comment->children()->delete();
         }
