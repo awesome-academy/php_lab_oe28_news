@@ -87,4 +87,6 @@ return [
     'review_news' => 'Duyệt tin',
     'approve' => 'Chấp nhận',
     'review' => 'Duyệt',
+    'report' => 'Báo cáo',
+    'news_of_week' => 'Bài viết trong tuần',
 ];
