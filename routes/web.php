@@ -44,6 +44,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'as' => 'admin.'], f
         Route::get('/', 'AdminController@indexCategories')->name('index');
         Route::get('/{id}', 'AdminController@editCategory')->name('edit');
     });
+
+    Route::get('/chart', 'AdminController@chart')->name('chart');
 });
 
 

@@ -23,4 +23,6 @@ interface NewsRepositoryInterface extends RepositoryInterface
     public function searchNewsOfUser($keyWord, $userId);
 
     public function getAllOfCurrentWeek();
+
+    public function getAllNewsOfMonth($month, $year);
 }

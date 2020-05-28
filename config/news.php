@@ -30,5 +30,7 @@ return[
     'report' => [
         'day' => 0,
         'time' => '08:00',
-    ]
+    ],
+
+    'number_of_months' => 12,
 ];

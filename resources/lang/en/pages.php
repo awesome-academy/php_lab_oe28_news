@@ -93,4 +93,7 @@ return [
     'review' => 'Review',
     'report' => 'Report',
     'news_of_week' => 'News of week',
+    'chart' => 'Chart',
+    'news_of_month' => "News of month",
+    'news_of_year' => "News of year",
 ];
