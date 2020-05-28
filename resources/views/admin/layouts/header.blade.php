@@ -6,6 +6,41 @@
                     @yield('title')
                 </h1></div>
                 <div class="header-button">
+                    @if (Auth::user()->role_id == App\Enums\UserRole::Admin || Auth::user()->role_id == App\Enums\UserRole::Reviewer)
+                        <div class="noti-wrap">
+                            <div class="noti__item js-item-menu">
+                                <i class="zmdi zmdi-notifications"></i>
+                                @if (Auth::user()->unreadNotifications->count() != config('news.empty'))
+                                    <span class="quantity notify-count">{{ Auth::user()->unreadNotifications->count() }}</span>
+                                @endif
+                                <div class="notifi-dropdown js-dropdown pre-scrollable"
+                                     data-count="{{ Auth::user()->unreadNotifications->count() }}"
+                                     data-key="{{ env('PUSHER_APP_KEY') }}"
+                                     data-id="{{ Auth::id() }}"
+                                     data-link="{{ route('review.notification', '') }}"
+                                     data-title="{{ trans('pages.news_notify') }}">
+                                    @foreach (Auth::user()->notifications as $notification)
+                                        <div class="notifi__item">
+                                            @if ($notification->read())
+                                                <div class="bg-c1 img-cir img-40">
+                                                    <i class="zmdi zmdi-email-open"></i>
+                                                </div>
+                                            @else
+                                                <div class="bg-c3 img-cir img-40">
+                                                    <i class="zmdi zmdi-email"></i>
+                                                </div>
+                                            @endif
+                                            <div class="content">
+                                                <p>{{ trans('pages.news_notify') }}</p>
+                                                <a href="{{ route('review.notification', $notification->id) }}">{{ $notification->data['title'] }}</a><br>
+                                                <span class="date">{{ $notification->data['time'] }}</span>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     <div class="account-wrap">
                         <div class="account-item clearfix js-item-menu">
                             <div class="image">

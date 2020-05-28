@@ -3,20 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Enums\NewsStatus;
+use App\Enums\UserRole;
 use App\Http\Requests\NewsRequest;
+use App\Notifications\NewsNotification;
 use App\Repositories\News\NewsRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 
 class NewsController extends Controller
 {
     protected $newsRepo;
+    protected $userRepo;
 
-    public function __construct(NewsRepositoryInterface $newsRepo)
-    {
+    public function __construct(
+        NewsRepositoryInterface $newsRepo,
+        UserRepositoryInterface $userRepo
+    ) {
         $this->middleware('admin')->except('show', 'status', 'store', 'update');
         $this->newsRepo = $newsRepo;
+        $this->userRepo = $userRepo;
     }
 
     /**
@@ -64,7 +72,7 @@ class NewsController extends Controller
             }
         }
 
-        $this->newsRepo->create([
+        $news = $this->newsRepo->create([
             'title' => $request->title,
             'category_id' => $request->category_id,
             'description' => $request->description,
@@ -75,6 +83,17 @@ class NewsController extends Controller
             'status' => NewsStatus::StatusNew,
             'slug' => Str::slug($request->title),
         ]);
+
+        $data = [
+            'title' => $news->title,
+            'link' => route('review.news', $news->id),
+            'time' => $news->created_at->format(config('news.date_time_format')),
+        ];
+
+        Notification::send(
+            $this->userRepo->findByAttributeIn('role_id', [UserRole::Admin, UserRole::Reviewer]),
+            new NewsNotification($data)
+        );
 
         return redirect()->back()->with('success', trans('pages.successful'));
     }

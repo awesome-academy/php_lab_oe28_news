@@ -63,6 +63,7 @@ Route::group(['prefix' => 'review', 'middleware' => 'review', 'as' => 'review.']
     Route::get('/status/{id}/{statusId}', 'NewsController@status')->name('status');
     Route::get('/category/{id}', 'ReviewController@category')->name('category');
     Route::get('/{id}', 'ReviewController@editNews')->name('news');
+    Route::get('/notification/{id}', 'ReviewController@readNotification')->name('notification');
 });
 
 Route::group(['prefix' => 'write', 'middleware' => 'write', 'as' => 'write.'], function () {

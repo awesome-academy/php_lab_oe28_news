@@ -9,4 +9,6 @@ interface UserRepositoryInterface extends RepositoryInterface
     public function likesNews($news);
 
     public function unlikesNews($news);
+
+    public function getNotification($id);
 }

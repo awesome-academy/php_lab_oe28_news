@@ -4,5 +4,6 @@
     "/css/app.css": "/css/app.css",
     "/js/chart.js": "/js/chart.js",
     "/js/like.js": "/js/like.js",
-    "/js/main.js": "/js/main.js"
+    "/js/main.js": "/js/main.js",
+    "/js/notify.js": "/js/notify.js"
 }
