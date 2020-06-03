@@ -75,4 +75,9 @@ abstract class BaseRepository implements RepositoryInterface
     {
         $this->model->where($attributes)->delete();
     }
+
+    public function findByAttributeIn($attribute, array $values)
+    {
+        return $this->model->whereIn($attribute, $values)->get();
+    }
 }

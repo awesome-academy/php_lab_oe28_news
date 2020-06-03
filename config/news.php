@@ -33,4 +33,6 @@ return[
     ],
 
     'number_of_months' => 12,
+
+    'empty' => 0,
 ];

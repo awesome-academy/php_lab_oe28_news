@@ -31,3 +31,7 @@ mix.js([
 mix.js([
     'resources/assets/js/chart.js',
 ], 'public/js/chart.js');
+
+mix.js([
+    'resources/assets/js/notify.js',
+], 'public/js/notify.js');

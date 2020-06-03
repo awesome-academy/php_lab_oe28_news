@@ -22,4 +22,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         $news->likes()->detach(Auth::id());
     }
+
+    public function getNotification($id)
+    {
+        return Auth::user()->notifications()->where('id', $id)->firstOrFail();
+    }
 }

@@ -22,7 +22,7 @@
           media="all">
     <link href="{{ asset('bower_components/bower-package/admin/vendor/css-hamburgers/hamburgers.min.css') }}"
           rel="stylesheet" media="all">
-    <link href="{{ asset('bower_components/bower-package/admin/vendor/slick/slick.css" rel="stylesheet') }}"
+    <link href="{{ asset('bower_components/bower-package/admin/vendor/slick/slick.scss/slick.css" rel="stylesheet') }}"
           rel="stylesheet" media="all">
     <link href="{{ asset('bower_components/bower-package/admin/vendor/select2/select2.min.css') }}" rel="stylesheet"
           media="all">
@@ -60,6 +60,7 @@
 
 <script src="{{ asset('bower_components/bower-package/admin/vendor/jquery-3.2.1.min.js') }}"></script>
 <script src="{{ asset('bower_components/bower-package/admin/vendor/bootstrap-4.1/popper.min.js') }}"></script>
+<script src="{{ asset('bower_components/pusher-js/dist/web/pusher.js') }}"></script>
 <script src="{{ asset('bower_components/bower-package/admin/vendor/bootstrap-4.1/bootstrap.min.js') }}"></script>
 <script src="{{ asset('bower_components/bower-package/admin/vendor/slick/slick.min.js') }}"></script>
 <script src="{{ asset('bower_components/bower-package/admin/vendor/wow/wow.min.js') }}"></script>
@@ -78,5 +79,6 @@
 <script src="{{ asset('bower_components/bower-package/admin/js/main.js') }}"></script>
 <script src="{{ mix('js/alert.js') }}"></script>
 <script src="{{ mix('js/chart.js') }}"></script>
+<script src="{{ mix('js/notify.js') }}"></script>
 </body>
 </html>

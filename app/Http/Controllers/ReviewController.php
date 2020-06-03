@@ -5,20 +5,25 @@ namespace App\Http\Controllers;
 use App\Enums\NewsStatus;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Repositories\News\NewsRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
     protected $newsRepo;
     protected $categoryRepo;
+    protected $userRepo;
 
     public function __construct(
         NewsRepositoryInterface $newsRepo,
-        CategoryRepositoryInterface $categoryRepo
+        CategoryRepositoryInterface $categoryRepo,
+        UserRepositoryInterface $userRepo
     ) {
         $this->newsRepo = $newsRepo;
         $this->categoryRepo = $categoryRepo;
+        $this->userRepo = $userRepo;
     }
 
     public function index()
@@ -74,5 +79,20 @@ class ReviewController extends Controller
         } else {
             return view('reviewer.newsdetail', compact('news'));
         }
+    }
+
+    public function readNotification($id)
+    {
+        try {
+            $notification = $this->userRepo->getNotification($id);
+        } catch (ModelNotFoundException $exception) {
+            return redirect()->back();
+        }
+
+        if ($notification->unread()) {
+            $notification->markAsRead();
+        }
+
+        return redirect($notification->data['link']);
     }
 }

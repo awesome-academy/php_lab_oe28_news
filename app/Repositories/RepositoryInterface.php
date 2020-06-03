@@ -21,4 +21,6 @@ interface RepositoryInterface
     public function findByAttributes($attributes = []);
 
     public function deleteByAttributes($attributes = []);
+
+    public function findByAttributeIn($attribute, array $values);
 }
